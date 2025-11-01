@@ -42,3 +42,6 @@ const scheduleSlice = createSlice({
         }
     }
 })
+
+export const { addLesson, updateLesson, deleteLesson } = scheduleSlice.actions
+export default scheduleSlice.reducer
