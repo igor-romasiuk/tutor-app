@@ -3,7 +3,9 @@
 import { useSelector } from 'react-redux'
 import type { RootState } from '@/lib/store/store'
 import StatisticCard from "./components/StatisticCard"
-import { getWeekRange, findNextLesson, formatLessonDateTime } from '@/lib/utils/dateUtils'
+import UpcomingLessons from "./components/UpcomingLessons"
+import QuickActions from "./components/QuickActions"
+import { getWeekRange, findNextLesson, formatLessonDateTime, getUpcomingLessons } from '@/lib/utils/dateUtils'
 
 export default function Home() {
   const students = useSelector((state: RootState) => state.students.students)
@@ -21,6 +23,7 @@ export default function Home() {
   const nextLessonText = nextLesson ? formatLessonDateTime(nextLesson.date, nextLesson.startTime) : 'None'
   const nextLessonStudent = nextLesson ? students.find(s => s.id === nextLesson.studentId)?.name || 'Student' : null
   const lessonsToday = lessons.filter(lesson => lesson.date === todayDateStr).length
+  const upcomingLessons = getUpcomingLessons(lessons, 5)
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -39,6 +42,13 @@ export default function Home() {
           <StatisticCard title="Lessons Today" value={lessonsToday} description="Scheduled for today" />
         </div>
       </section>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+        <div className="lg:col-span-2">
+          <UpcomingLessons lessons={upcomingLessons} students={students} />
+        </div>
+        <QuickActions />
+      </div>
     </main>
   )
 }

@@ -24,3 +24,14 @@ export const findNextLesson = (lessons: Lesson[]) => {
 export const formatLessonDateTime = (date: string, time: string) => {
   return `${new Date(date).toLocaleDateString('en-US', { day: '2-digit', month: '2-digit' })} ${time}`
 }
+
+export const getUpcomingLessons = (lessons: Lesson[], limit: number = 5): Lesson[] => {
+  const now = new Date()
+  return lessons
+    .filter(lesson => new Date(`${lesson.date}T${lesson.startTime}`) > now)
+    .sort((a, b) => 
+      new Date(`${a.date}T${a.startTime}`).getTime() - 
+      new Date(`${b.date}T${b.startTime}`).getTime()
+    )
+    .slice(0, limit)
+}
