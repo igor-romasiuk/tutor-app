@@ -7,8 +7,43 @@ interface StudentState {
     error: string | null
 }
 
+const testStudents: Student[] = [
+    {
+        id: '1',
+        name: 'John Smith',
+        email: 'john.smith@example.com',
+        phone: 380501234567,
+        notes: 'Quick learner, needs help with algebra',
+        createdAt: '2024-01-15T10:00:00Z'
+    },
+    {
+        id: '2',
+        name: 'Emma Wilson',
+        email: 'emma.wilson@example.com',
+        phone: 380507654321,
+        notes: 'Excellent student, preparing for exams',
+        createdAt: '2024-01-20T14:30:00Z'
+    },
+    {
+        id: '3',
+        name: 'Michael Brown',
+        email: 'michael.brown@example.com',
+        phone: 380509876543,
+        notes: 'Struggling with grammar, needs extra practice',
+        createdAt: '2024-02-01T09:15:00Z'
+    },
+    {
+        id: '4',
+        name: 'Sophia Davis',
+        email: 'sophia.davis@example.com',
+        phone: 380503456789,
+        notes: 'Advanced level, working on conversation skills',
+        createdAt: '2024-02-10T11:00:00Z'
+    }
+]
+
 const initialState: StudentState = {
-    students: [],
+    students: testStudents,
     loading: false,
     error: null
 }
