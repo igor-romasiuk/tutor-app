@@ -18,13 +18,13 @@ const scheduleSlice = createSlice({
     initialState,
     reducers: {
         addLesson: (state, action: PayloadAction<Lesson>) => {
-            const newStudent = { ...action.payload}
+            const newLesson = { ...action.payload}
 
-            if (!newStudent.id || newStudent.id === '') {
-                newStudent.id = Date.now().toString()
+            if (!newLesson.id || newLesson.id === '') {
+                newLesson.id = Date.now().toString()
             }
 
-            state.lessons.push(newStudent)
+            state.lessons.push(newLesson)
         },
         updateLesson: (state, action: PayloadAction<Lesson>) => {
             const index = state.lessons.findIndex(
