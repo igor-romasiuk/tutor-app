@@ -3,10 +3,14 @@
 import { useSelector } from 'react-redux'
 import type { RootState } from '@/lib/store/store'
 import StudentCard from '@/components/StudentCard'
+import { useState } from 'react'
+import AddStudentModal from '@/components/AddStudentModal'
 
 export default function StudentsPage() {
   const students = useSelector((state: RootState) => state.students.students)
   const lessons = useSelector((state: RootState) => state.schedule.lessons)
+
+  const [showModal, setShowModal] = useState(false)
 
   const getLessonsCount = (studentId: string) => {
     return lessons.filter(lesson => lesson.studentId === studentId).length
@@ -24,9 +28,14 @@ export default function StudentsPage() {
     <main className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Students</h1>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
+        <button
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+          onClick={() => setShowModal(true)}
+        >
           Add New Student
         </button>
+
+        {showModal && <AddStudentModal onClose={() => setShowModal(false)} />}
       </div>
 
       {students.length === 0 ? (
