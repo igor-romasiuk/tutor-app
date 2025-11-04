@@ -52,14 +52,14 @@ const studentsSlice = createSlice({
     name: 'students',
     initialState,
     reducers: {
-        addStudent: (state, action: PayloadAction<Student>) => {
+        addStudent: (state, action: PayloadAction<Omit<Student, 'id'> & { id?: string }>) => {
             const newStudent = { ...action.payload}
 
             if (!newStudent.id || newStudent.id === '') {
                 newStudent.id = Date.now().toString()
             }
 
-            state.students.push(newStudent)
+            state.students.push(newStudent as Student)
         },
         updateStudent: (state, action: PayloadAction<Student>) => {
             const index = state.students.findIndex(
