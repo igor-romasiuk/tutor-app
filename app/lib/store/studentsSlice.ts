@@ -71,9 +71,7 @@ const studentsSlice = createSlice({
             }
         },
         deleteStudent: (state, action: PayloadAction<string>) => {
-            state.students = state.students.filter(
-                student => student.id !== action.payload
-            )
+            state.students = state.students.filter((student) => student.id !== action.payload)
         }
     }
 })

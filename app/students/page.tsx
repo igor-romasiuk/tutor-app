@@ -1,14 +1,16 @@
 'use client'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '@/lib/store/store'
 import StudentCard from '@/components/StudentCard'
 import { useState } from 'react'
 import AddStudentModal from '@/components/AddStudentModal'
+import { deleteStudent } from '@/lib/store/studentsSlice'
 
 export default function StudentsPage() {
   const students = useSelector((state: RootState) => state.students.students)
   const lessons = useSelector((state: RootState) => state.schedule.lessons)
+  const dispatch = useDispatch()
 
   const [showModal, setShowModal] = useState(false)
 
@@ -16,13 +18,10 @@ export default function StudentsPage() {
     return lessons.filter(lesson => lesson.studentId === studentId).length
   }
 
-  const handleEdit = (studentId: string) => {
-    console.log('Edit student:', studentId)
+  const handleDelete = (id: string) => {
+    dispatch(deleteStudent(id))
   }
 
-  const handleDelete = (studentId: string) => {
-    console.log('Delete student:', studentId)
-  }
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -53,7 +52,6 @@ export default function StudentsPage() {
               key={student.id}
               student={student}
               lessonsCount={getLessonsCount(student.id)}
-              onEdit={() => handleEdit(student.id)}
               onDelete={() => handleDelete(student.id)}
             />
           ))}
