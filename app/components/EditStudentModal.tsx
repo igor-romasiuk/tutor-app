@@ -1,31 +1,34 @@
-import { useState } from "react"
-import { addStudent } from "@/lib/store/studentsSlice"
-import { useDispatch } from "react-redux"
+import { Student } from "@/types/student"
+import { useEffect, useState } from "react"
 
-export default function AddStudentModal({ onClose }: { onClose: () => void }) {
+interface EditStudentModalProps {
+    student: Student
+    onSave: (student: Student) => void
+    onClose: () => void
+}
+
+
+export default function EditStudentModal({student, onSave, onClose}: EditStudentModalProps) {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const [notes, setNotes] = useState('')
     const [errors, setErrors] = useState({name:'',email: '',phone: ''})
 
-    const dispatch = useDispatch()
-
-    const newStudent = {
-        id: '',
-        name,
-        email,
-        phone: Number(phone),
-        notes,
-        createdAt: new Date().toISOString()
-    }
-
-    const newErrors = {name:'',email: '',phone: '',notes: ''}
+    useEffect(() => {
+        setName(student.name)
+        setEmail(student.email)
+        setPhone(student.phone.toString())
+        setNotes(student.notes)
+        setErrors({name: '', email: '', phone: ''})
+    }, [student])
 
     const handleOverlayClick = (e: React.MouseEvent) => {
         if (e.target === e.currentTarget) onClose()
     }
 
+    const newErrors = {name:'',email: '',phone: '',notes: ''}
+    
     const validateForm = () =>  {
         if (!name.trim()) newErrors.name = "Name is required"
         if (!email.trim()) {
@@ -41,23 +44,25 @@ export default function AddStudentModal({ onClose }: { onClose: () => void }) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const foundErrors = validateForm()
+        const validationErrors = validateForm()
 
-        if (foundErrors.name || foundErrors.email || foundErrors.phone) {
-            setErrors(foundErrors)
+        if (validationErrors.name || validationErrors.email || validationErrors.phone) {
+            setErrors(validationErrors)
 
             return
         }
 
-        dispatch(addStudent(newStudent))
+        const newStudent = {
+            id: student.id,
+            createdAt: student.createdAt,
+            name,
+            email,
+            phone: Number(phone),
+            notes
+        }
 
+        onSave(newStudent)
         onClose()
-
-        setName('');
-        setEmail('');
-        setPhone('');
-        setNotes('');
-        setErrors({name:'',email: '',phone: ''});
     }
 
     return (
@@ -88,7 +93,7 @@ export default function AddStudentModal({ onClose }: { onClose: () => void }) {
                         <span className="inline-block bg-blue-100 rounded-full p-3 mb-2">
                             <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16 14a4 4 0 10-8 0m8 0v2a4 4 0 01-4 4 4 4 0 01-4-4v-2m8 0a4 4 0 00-8 0"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </span>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center tracking-tight">Add Student</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center tracking-tight">Edit Student</h2>
                     </div>
                     <div>
                         <label className="block text-base text-gray-700 mb-1 font-medium">Name</label>
@@ -145,7 +150,7 @@ export default function AddStudentModal({ onClose }: { onClose: () => void }) {
                         type="submit"
                         className="w-full py-2.5 mt-2 bg-gradient-to-r from-green-500 via-emerald-400 to-lime-400 shadow-lg font-semibold text-white text-base rounded-lg transition-all duration-200 hover:from-green-600 hover:to-green-400 focus:outline-none active:scale-95 border-none ring-2 ring-transparent focus:ring-green-300"
                     >
-                        Add Student
+                        Save
                     </button>
                 </form>
             </div>

@@ -5,7 +5,10 @@ import type { RootState } from '@/lib/store/store'
 import StudentCard from '@/components/StudentCard'
 import { useState } from 'react'
 import AddStudentModal from '@/components/AddStudentModal'
-import { deleteStudent } from '@/lib/store/studentsSlice'
+import { deleteStudent, updateStudent } from '@/lib/store/studentsSlice'
+import { Student } from '@/types/student'
+import EditStudentModal from '@/components/EditStudentModal'
+
 
 export default function StudentsPage() {
   const students = useSelector((state: RootState) => state.students.students)
@@ -13,6 +16,7 @@ export default function StudentsPage() {
   const dispatch = useDispatch()
 
   const [showModal, setShowModal] = useState(false)
+  const [editStudent, setEditStudent] = useState<Student | null>(null)
 
   const getLessonsCount = (studentId: string) => {
     return lessons.filter(lesson => lesson.studentId === studentId).length
@@ -20,6 +24,16 @@ export default function StudentsPage() {
 
   const handleDelete = (id: string) => {
     dispatch(deleteStudent(id))
+  }
+
+  const handleEdit = (student: Student) => {
+    setEditStudent(student)
+  }
+
+  const handleSaveEdit = (student: Student) => {
+    dispatch(updateStudent(student))
+
+    setEditStudent(null)
   }
 
 
@@ -53,10 +67,12 @@ export default function StudentsPage() {
               student={student}
               lessonsCount={getLessonsCount(student.id)}
               onDelete={() => handleDelete(student.id)}
+              onEdit={() => handleEdit(student)}
             />
           ))}
         </div>
       )}
+        {editStudent && <EditStudentModal student={editStudent} onSave={handleSaveEdit} onClose={() => setEditStudent(null)} />}
     </main>
   )
 }

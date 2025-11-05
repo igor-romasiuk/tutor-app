@@ -62,9 +62,7 @@ const studentsSlice = createSlice({
             state.students.push(newStudent as Student)
         },
         updateStudent: (state, action: PayloadAction<Student>) => {
-            const index = state.students.findIndex(
-                student => student.id === action.payload.id
-            )
+            const index = state.students.findIndex(student => student.id === action.payload.id)
 
             if (index !== -1) {
                 state.students[index] = action.payload
