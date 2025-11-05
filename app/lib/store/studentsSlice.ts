@@ -42,8 +42,22 @@ const testStudents: Student[] = [
     }
 ]
 
+const loadStudentsFromLocalStorage = () => {
+    const studentsFromLocalStorage = localStorage.getItem('students')
+
+    if (!studentsFromLocalStorage) {
+        return testStudents
+    }
+
+    try {
+        return JSON.parse(studentsFromLocalStorage)
+    } catch (error) {
+        return testStudents
+    }
+}
+
 const initialState: StudentState = {
-    students: testStudents,
+    students: loadStudentsFromLocalStorage(),
     loading: false,
     error: null
 }
@@ -60,6 +74,8 @@ const studentsSlice = createSlice({
             }
 
             state.students.push(newStudent as Student)
+
+            localStorage.setItem('students', JSON.stringify(state.students))
         },
         updateStudent: (state, action: PayloadAction<Student>) => {
             const index = state.students.findIndex(student => student.id === action.payload.id)
@@ -67,9 +83,13 @@ const studentsSlice = createSlice({
             if (index !== -1) {
                 state.students[index] = action.payload
             }
+
+            localStorage.setItem('students', JSON.stringify(state.students))
         },
         deleteStudent: (state, action: PayloadAction<string>) => {
             state.students = state.students.filter((student) => student.id !== action.payload)
+
+            localStorage.setItem('students', JSON.stringify(state.students))
         }
     }
 })
