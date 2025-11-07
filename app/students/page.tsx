@@ -9,7 +9,6 @@ import { deleteStudent, updateStudent } from '@/lib/store/studentsSlice'
 import { Student } from '@/types/student'
 import EditStudentModal from '@/components/EditStudentModal'
 
-
 export default function StudentsPage() {
   const students = useSelector((state: RootState) => state.students.students)
   const lessons = useSelector((state: RootState) => state.schedule.lessons)
