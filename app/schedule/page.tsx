@@ -4,52 +4,54 @@ import { useState } from "react"
 import { ChevronLeft, ChevronRight, Clock, User } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/lib/store/store"
+import { deleteLesson, updateLesson } from "@/lib/store/scheduleSlice"
+import { getDaysArray } from "@/lib/utils/getDays"
+import { getLessonsByDate, getLessonsInMonth } from "@/lib/utils/getLessons"
+import { getMonthName, getNextMonth, getPrevMonth } from "@/lib/utils/monthNavigation"
+import EditLessonModal from "@/components/EditLessonModal"
+import { Lesson } from "@/types/lesson"
+
 
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date(2025, 0, 1))
   const [selectedDate, setSelectedDate] = useState<number | null>(null)
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [editLesson, setEditLesson] = useState<Lesson | null>(null)
 
   const lessons = useSelector((state: RootState) => state.schedule.lessons)
   const students = useSelector((state: RootState) => state.students.students)
+  const dispatch = useDispatch()
 
-  const getDaysInMonth = (date: Date) =>
-    new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-  const getFirstDayOfMonth = (date: Date) =>
-    new Date(date.getFullYear(), date.getMonth(), 1).getDay()
-
-  const daysInMonth = getDaysInMonth(currentDate)
-  const firstDay = getFirstDayOfMonth(currentDate)
-  const days = Array(firstDay)
-    .fill(null)
-    .concat(Array.from({ length: daysInMonth }, (_, i) => i + 1))
-
-  const lessonsInMonth = lessons.filter(
-    l =>
-      new Date(l.date).getMonth() === currentDate.getMonth() &&
-      new Date(l.date).getFullYear() === currentDate.getFullYear()
-  )
-
-  const selectedDateSessions = selectedDate
-    ? lessonsInMonth.filter(l => new Date(l.date).getDate() === selectedDate)
-    : []
+  const days = getDaysArray(currentDate)
+  const lessonsInMonth = getLessonsInMonth(lessons, currentDate)
+  const selectedDateSessions = getLessonsByDate(lessonsInMonth, selectedDate)
+  const monthName = getMonthName(currentDate)
 
   const nextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))
+    setCurrentDate(getNextMonth(currentDate))
     setSelectedDate(null)
   }
 
   const prevMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))
+    setCurrentDate(getPrevMonth(currentDate))
     setSelectedDate(null)
   }
 
-  const formatter = new Intl.DateTimeFormat("uk-UA", {
-    month: "long",
-    year: "numeric",
-  })
-  const monthName = formatter.format(currentDate).replace(/^\w/, c => c.toUpperCase())
+  const handleDelete = (id: string) => {
+    dispatch(deleteLesson(id))
+  }
+
+  const handleEditLesson = (lesson: Lesson) => {
+    setEditLesson(lesson)
+  }
+
+  const handleSaveEdit = (lesson: Lesson) => {
+    dispatch(updateLesson(lesson))
+
+    setEditLesson(null)
+  }
 
   return (
     <div className="min-h-screen bg-background p-8">
@@ -151,13 +153,26 @@ export default function CalendarPage() {
                             size="sm"
                             variant="outline"
                             className="text-xs flex-1 bg-transparent"
+                            onClick={() => {
+                              setEditLesson(session)
+                              setIsOpenModal(true)
+                            }}
                           >
                             Edit
                           </Button>
+                          {isOpenModal && <EditLessonModal
+                            lesson={editLesson}
+                            onSave={handleSaveEdit}
+                            onClose={() => {
+                              setIsOpenModal(false)
+                              setEditLesson(null)
+                            }} />}
+
                           <Button
                             size="sm"
                             variant="outline"
                             className="text-xs flex-1 text-destructive bg-transparent"
+                            onClick={() => handleDelete(session.id)}
                           >
                             Cancel
                           </Button>
