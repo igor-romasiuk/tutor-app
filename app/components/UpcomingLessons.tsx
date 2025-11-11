@@ -11,22 +11,22 @@ type UpcomingLessonsProps = {
 export default function UpcomingLessons({ lessons, students, limit = 5 }: UpcomingLessonsProps) {
   if (lessons.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Upcoming Lessons</h3>
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Lessons</h3>
         <p className="text-gray-500 text-sm">No upcoming lessons scheduled</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Upcoming Lessons</h3>
+    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Lessons</h3>
       <div className="space-y-3">
         {lessons.slice(0, limit).map((lesson) => {
           const student = students.find(s => s.id === lesson.studentId)
           return (
-            <div 
-              key={lesson.id} 
+            <div
+              key={lesson.id}
               className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
             >
               <div className="flex-1">
