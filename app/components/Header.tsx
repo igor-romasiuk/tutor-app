@@ -2,55 +2,50 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
+import { Calendar, Users, Home } from "lucide-react"
 
 export default function Header() {
-    const pathname = usePathname()
+  const pathname = usePathname()
 
-    const navLinks = [
-        { href: '/', label: 'Home' },
-        { href: '/students', label: 'Students' },
-        { href: '/schedule', label: 'Schedule' }
-    ]
+  const navLinks = [
+    { href: '/', label: 'Dashboard', icon: Home },
+    { href: '/students', label: 'Students', icon: Users },
+    { href: '/calendar', label: 'Calendar', icon: Calendar }
+  ]
 
-    const isActive = (href: string) => {
-        if (href === '/') {
-            return pathname === '/'
-        }
-        return pathname?.startsWith(href)
-    }
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/'
+    return pathname?.startsWith(href)
+  }
 
-    const getLinkClasses = (href: string) => {
-        const baseClasses = "px-3 py-2 rounded-md text-sm font-medium transition-colors"
-        const activeClasses = "text-blue-600 bg-blue-50"
-        const inactiveClasses = "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-        
-        return `${baseClasses} ${isActive(href) ? activeClasses : inactiveClasses}`
-    }
+  const getLinkClasses = (href: string) => {
+    const base = "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+    const active = "text-blue-600 bg-blue-50"
+    const inactive = "text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+    return `${base} ${isActive(href) ? active : inactive}`
+  }
 
-    return (
-        <header className="bg-white border-b border-gray-200 shadow-sm">
-            <div className="container mx-auto px-4 py-4">
-                <div className="flex items-center justify-between">
-                    <Link
-                        href="/"
-                        className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
-                    >
-                        Tutor App
-                    </Link>
+  return (
+    <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-gray-200 shadow-sm">
+      <div className="container mx-auto px-6 py-3 flex items-center justify-between">
+        {/* ЛОГО */}
+        <Link
+          href="/"
+          className="text-xl font-bold tracking-tight text-gray-900 hover:text-blue-600 transition-colors"
+        >
+          Tutor<span className="text-blue-600">App</span>
+        </Link>
 
-                    <nav className="flex items-center gap-6">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                className={getLinkClasses(link.href)}
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
-                    </nav>
-                </div>
-            </div>
-        </header>
-    )
+        {/* НАВІГАЦІЯ */}
+        <nav className="flex items-center gap-3">
+          {navLinks.map(({ href, label, icon: Icon }) => (
+            <Link key={href} href={href} className={getLinkClasses(href)}>
+              <Icon className="w-4 h-4" />
+              {label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+    </header>
+  )
 }

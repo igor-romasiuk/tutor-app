@@ -4,15 +4,15 @@ import Header from "./components/Header";
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-[#f9fafb] text-gray-900 min-h-screen">
         <StoreProvider>
           <Header />
-          {children}
+          <main className="container mx-auto px-6 py-10">{children}</main>
         </StoreProvider>
       </body>
     </html>
