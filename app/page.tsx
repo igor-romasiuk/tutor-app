@@ -6,6 +6,8 @@ import StatisticCard from "./components/StatisticCard"
 import UpcomingLessons from "./components/UpcomingLessons"
 import QuickActions from "./components/QuickActions"
 import { getWeekRange, findNextLesson, formatLessonDateTime, getUpcomingLessons } from '@/lib/utils/dateUtils'
+import PageContainer from "@/components/ui/PageContainer"
+import SectionTitle from "@/components/ui/SectionTitle"
 
 export default function Home() {
   const students = useSelector((state: RootState) => state.students.students)
@@ -14,23 +16,25 @@ export default function Home() {
   const { start: startOfWeek, end: endOfWeek } = getWeekRange()
   const todayDateStr = new Date().toISOString().split('T')[0]
 
-  const lessonsThisWeek = lessons.filter(lesson => {
-    const lessonDate = new Date(lesson.date)
+  const lessonsThisWeek = lessons.filter(l => {
+    const lessonDate = new Date(l.date)
     return lessonDate >= startOfWeek && lessonDate <= endOfWeek
   })
 
   const nextLesson = findNextLesson(lessons)
   const nextLessonText = nextLesson ? formatLessonDateTime(nextLesson.date, nextLesson.startTime) : 'None'
   const nextLessonStudent = nextLesson ? students.find(s => s.id === nextLesson.studentId)?.name || 'Student' : null
-  const lessonsToday = lessons.filter(lesson => lesson.date === todayDateStr).length
+  const lessonsToday = lessons.filter(l => l.date === todayDateStr).length
   const upcomingLessons = getUpcomingLessons(lessons, 5)
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Dashboard</h1>
+    <PageContainer>
+      <h1 className="text-3xl font-bold text-gray-900 mb-10 tracking-tight">
+        Dashboard
+      </h1>
 
       <section className="mb-12">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Statistics</h2>
+        <SectionTitle>Statistics</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatisticCard title="Total Students" value={students.length} description="Registered in system" />
           <StatisticCard title="Lessons This Week" value={lessonsThisWeek.length} description="Scheduled this week" />
@@ -43,12 +47,12 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <UpcomingLessons lessons={upcomingLessons} students={students} />
         </div>
         <QuickActions />
       </div>
-    </main>
+    </PageContainer>
   )
 }
