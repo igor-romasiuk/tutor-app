@@ -96,8 +96,18 @@ const testLessons: Lesson[] = [
     }
 ]
 
+const loadLessons = () => {
+    const stored = localStorage.getItem('lessons')
+
+    if (stored) {
+        return JSON.parse(stored)
+    }
+
+    return testLessons
+}
+
 const initialState: ScheduleState = {
-    lessons: testLessons,
+    lessons: loadLessons(),
     loading: false,
     error: null
 }
@@ -114,6 +124,7 @@ const scheduleSlice = createSlice({
             }
 
             state.lessons.push(newLesson)
+            localStorage.setItem('lessons', JSON.stringify(state.lessons))
         },
         updateLesson: (state, action: PayloadAction<Lesson>) => {
             const index = state.lessons.findIndex(
@@ -122,12 +133,16 @@ const scheduleSlice = createSlice({
 
             if (index !== -1) {
                 state.lessons[index] = action.payload
+
+                localStorage.setItem('lessons', JSON.stringify(state.lessons))
             }
         },
         deleteLesson: (state, action: PayloadAction<string>) => {
             state.lessons = state.lessons.filter(
                 lesson => lesson.id !== action.payload
             )
+
+            localStorage.setItem('lessons', JSON.stringify(state.lessons))
         }
     }
 })
