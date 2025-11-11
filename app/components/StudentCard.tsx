@@ -9,22 +9,17 @@ type StudentCardProps = {
 
 export default function StudentCard({ student, lessonsCount = 0, onEdit, onDelete }: StudentCardProps) {
   const formatPhone = (phone: number) => {
-    const phoneStr = phone.toString()
-    if (phoneStr.length === 10) {
-      return `${phoneStr.slice(0, 3)} ${phoneStr.slice(3, 6)} ${phoneStr.slice(6, 9)} ${phoneStr.slice(9)}`
-    }
-    return phoneStr
+    const s = phone.toString()
+    return s.length === 10 ? `${s.slice(0,3)} ${s.slice(3,6)} ${s.slice(6,9)} ${s.slice(9)}` : s
   }
 
-  const truncateNotes = (notes: string, maxLength: number = 80) => {
-    if (notes.length <= maxLength) return notes
-    return notes.slice(0, maxLength) + '...'
-  }
+  const truncateNotes = (notes: string, maxLength: number = 80) =>
+    notes.length <= maxLength ? notes : notes.slice(0, maxLength) + '...'
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-4">
-        <h3 className="text-xl font-semibold text-gray-900">{student.name}</h3>
+        <h3 className="text-lg font-semibold text-gray-900">{student.name}</h3>
         {lessonsCount > 0 && (
           <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
             {lessonsCount} {lessonsCount === 1 ? 'lesson' : 'lessons'}
