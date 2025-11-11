@@ -15,7 +15,7 @@ import { Lesson } from "@/types/lesson"
 
 
 export default function CalendarPage() {
-  const [currentDate, setCurrentDate] = useState(new Date(2025, 0, 1))
+  const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<number | null>(null)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [editLesson, setEditLesson] = useState<Lesson | null>(null)

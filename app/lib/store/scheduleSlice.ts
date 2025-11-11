@@ -96,18 +96,31 @@ const testLessons: Lesson[] = [
     }
 ]
 
-const loadLessons = () => {
-    const stored = localStorage.getItem('lessons')
-
-    if (stored) {
-        return JSON.parse(stored)
+const loadLessonsFromLocalStorage = (): Lesson[] => {
+    if (typeof window === 'undefined') {
+      return testLessons
     }
-
-    return testLessons
-}
+  
+    const lessonsFromLocalStorage = localStorage.getItem('lessons')
+  
+    if (!lessonsFromLocalStorage) {
+      return testLessons
+    }
+  
+    try {
+      const parsed = JSON.parse(lessonsFromLocalStorage)
+      if (Array.isArray(parsed)) {
+        return parsed
+      }
+      return testLessons
+    } catch (error) {
+      console.error('Failed to parse lessons from localStorage:', error)
+      return testLessons
+    }
+  }
 
 const initialState: ScheduleState = {
-    lessons: loadLessons(),
+    lessons: loadLessonsFromLocalStorage(),
     loading: false,
     error: null
 }
