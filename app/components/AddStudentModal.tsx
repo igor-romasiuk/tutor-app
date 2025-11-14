@@ -51,13 +51,13 @@ export default function AddStudentModal({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
+            className="px-4 py-2 rounded-lg border border-border text-muted-foreground hover:bg-muted transition"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition shadow-sm"
+            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 transition shadow-sm"
           >
             Add Student
           </button>
@@ -80,14 +80,14 @@ function InputField({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-muted-foreground mb-1">{label}</label>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`w-full rounded-lg border px-3 py-2.5 bg-gray-50 focus:ring-2 outline-none transition ${
+        className={`w-full rounded-lg border px-3 py-2.5 bg-input focus:ring-2 outline-none transition ${
           error
-            ? "border-red-500 focus:ring-red-300"
-            : "border-gray-300 focus:ring-blue-200 focus:border-blue-500"
+            ? "border-destructive focus:ring-destructive"
+            : "border-border focus:ring-primary focus:border-primary"
         }`}
       />
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}

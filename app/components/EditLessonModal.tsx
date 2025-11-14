@@ -50,11 +50,11 @@ export default function EditLessonModal({
         <Input label="Subject" value={subject} onChange={setSubject} />
         <Input label="Notes" value={notes} onChange={setNotes} />
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <label className="block text-sm font-medium text-muted-foreground mb-1">Status</label>
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as Lesson["status"])}
-            className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 outline-none transition"
+            className="w-full rounded-lg border border-border bg-input px-3 py-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
           >
             <option value="scheduled">Scheduled</option>
             <option value="completed">Completed</option>
@@ -66,13 +66,13 @@ export default function EditLessonModal({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
+            className="px-4 py-2 rounded-lg border border-border text-muted-foreground hover:bg-muted transition"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition shadow-sm"
+            className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition shadow-sm"
           >
             Save Changes
           </button>
@@ -94,12 +94,12 @@ const Input = ({
   onChange: (v: string) => void
 }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+    <label className="block text-sm font-medium text-muted-foreground mb-1">{label}</label>
     <input
       type={type}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 outline-none transition"
+      className="w-full rounded-lg border border-border bg-input px-3 py-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
     />
   </div>
 )

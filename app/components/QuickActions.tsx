@@ -10,12 +10,12 @@ export default function QuickActions() {
 
   return (
     <Card className="p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+      <h3 className="text-lg font-semibold text-card-foreground mb-4">Quick Actions</h3>
       <div className="space-y-3">
         <Button className="w-full" variant="default">
           Add New Student
         </Button>
-        <Button className="w-full bg-green-500 hover:bg-green-600" onClick={() => setIsModalOpen(true)}>
+        <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90" onClick={() => setIsModalOpen(true)}>
           Add New Lesson
         </Button>
         {isModalOpen && <AddLessonModal onClose={() => setIsModalOpen(false)} />}

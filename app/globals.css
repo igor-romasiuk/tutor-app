@@ -1,2 +1,56 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
+:root {
+  --background: 249 250 251;
+  --foreground: 17 24 39;
+  --card: 255 255 255;
+  --card-foreground: 17 24 39;
+  --muted: 243 244 246;
+  --muted-foreground: 107 114 128;
+  --border: 229 231 235;
+  --input: 243 244 246;
+  --ring: 191 219 254;
+
+  --primary: 37 99 235;
+  --primary-foreground: 255 255 255;
+  --secondary: 59 130 246;
+  --secondary-foreground: 255 255 255;
+  --accent: 59 130 246;
+  --accent-foreground: 255 255 255;
+  --destructive: 220 38 38;
+  --destructive-foreground: 255 255 255;
+}
+
+.dark {
+  --background: 15 23 42;
+  --foreground: 226 232 240;
+  --card: 28 35 54;
+  --card-foreground: 226 232 240;
+  --muted: 30 41 59;
+  --muted-foreground: 156 163 175;
+  --border: 51 65 85;
+  --input: 30 41 59;
+  --ring: 56 189 248;
+
+  --primary: 96 165 250;
+  --primary-foreground: 15 23 42;
+  --secondary: 59 130 246;
+  --secondary-foreground: 28 35 54;
+  --accent: 99 102 241;
+  --accent-foreground: 233 244 254;
+  --destructive: 239 68 68;
+  --destructive-foreground: 30 41 59;
+}
+
+html {
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+}
+
+body {
+  @apply transition-colors duration-300;
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+  min-height: 100vh;
+}
